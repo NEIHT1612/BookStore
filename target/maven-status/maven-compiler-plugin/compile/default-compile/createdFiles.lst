@@ -1,0 +1,3 @@
+com\bookstore\entity\Book$BookBuilder.class
+com\bookstore\entity\Book.class
+com\bookstore\controller\Main.class

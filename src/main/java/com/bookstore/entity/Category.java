@@ -4,7 +4,6 @@
  */
 package com.bookstore.entity;
 
-import java.sql.Timestamp;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,14 +23,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Book {
-    private String id;
+public class Category {
+    private int id;
     private String name;
-    private String author;
-    private Timestamp date_of_public;
-    private int price;
-    private String publisher;
-    private String description;
-    private int category_id;
-
 }
