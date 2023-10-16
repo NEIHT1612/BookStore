@@ -20,49 +20,34 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-
 public class HomeServlet extends HttpServlet {
+
     BookDAO bookDAO;
     CategoryDAO categoryDAO;
-    
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        //tao SESSION
+        HttpSession session = request.getSession();
+        //tao DAO
         bookDAO = new BookDAO();
         categoryDAO = new CategoryDAO();
+        //tao doi tuong pageControl
         PageControl pageControl = new PageControl();
-        
-        //get du lieu tu DB len
-        List<Book> listBook = null;
         List<Category> listCategory = categoryDAO.findAll();
-        
-        //tao ra session
-        HttpSession session = request.getSession();
-        
-        String action;
-        try {
-            action = request.getParameter("action");
-            if(action == null){
-                action = "";
-            }
-        } catch (Exception e) {
-            action = "";
-        }
-        
-        switch(action){
-            default:
-                listBook = pagination(request,response,pageControl);
-                break;
-        }
-        
+
+        //phan trang
+        List<Book> listBook = pagination(request, pageControl);
+
         //set listBook vao session
         session.setAttribute("listBook", listBook);
         session.setAttribute("listCategory", listCategory);
         request.setAttribute("pageControl", pageControl);
-        
+
         //go to homepage
         request.getRequestDispatcher("views/user/home-page/homePage.jsp").forward(request, response);
-        
+
     }
 
     @Override
@@ -71,20 +56,7 @@ public class HomeServlet extends HttpServlet {
 //        request.setCharacterEncoding("UTF-8");
 //        response.setCharacterEncoding("UTF-8");
 //        response.setContentType("text/html; charset=UTF-8");
-        
-        String url = "home";
-        String action = request.getParameter("action");
-        switch(action){
-            case "search":
-                searchByName(request,response);       
-                url = "views/user/home-page/homePage.jsp";
-                break;
-            case "category":
-                searchByCategory(request,response);
-                url = "views/user/home-page/homePage.jsp";
-                break;
-        }
-        request.getRequestDispatcher(url).forward(request, response);
+
     }
 
     @Override
@@ -94,26 +66,26 @@ public class HomeServlet extends HttpServlet {
 
     private void searchByName(HttpServletRequest request, HttpServletResponse response) {
         String keyword = request.getParameter("keyword");
-        
+
         bookDAO = new BookDAO();
         List<Book> list = bookDAO.getContainsByProperty("name", keyword);
-        
+
         HttpSession session = request.getSession();
         session.setAttribute("listBook", list);
     }
 
     private void searchByCategory(HttpServletRequest request, HttpServletResponse response) {
         String id = request.getParameter("id");
-        
+
         bookDAO = new BookDAO();
-        
+
         List<Book> list = bookDAO.findByProperty("category_id", id);
-        
+
         HttpSession session = request.getSession();
         session.setAttribute("listBook", list);
     }
 
-    private List<Book> pagination(HttpServletRequest request, HttpServletResponse response, PageControl pageControl) {
+    private List<Book> pagination(HttpServletRequest request, PageControl pageControl) {
         //get page
         String pageRaw = request.getParameter("page");
         bookDAO = new BookDAO();
@@ -124,17 +96,53 @@ public class HomeServlet extends HttpServlet {
         } catch (Exception e) {
             page = 1;
         }
-        //tim kiem xem co tong bao nhieu record
-        int totalRecord = bookDAO.findTotalRecord();
-        //tim kiem xem co tong bao nhieu page
-        int totalPage = (totalRecord % Constant.RECORD_PER_PAGE == 0 ?
-                (totalRecord / Constant.RECORD_PER_PAGE):
-                (totalRecord / Constant.RECORD_PER_PAGE) + 1);
-        //set vao pageControl
+        int totalRecord = 0;
+        List<Book> listBook = null;
+        //get action hien tai muon lam gi
+        //tim kiem co bao nhieu record va listBookByPage
+        String action = request.getParameter("action") == null
+                ? "defaultFindAll"
+                : request.getParameter("action");
+        switch (action) {
+            case "search":
+                //phan trang dua tren search
+                //get ve keyword
+                String keyword = request.getParameter("keyword");
+                //tinh totalRecord
+                totalRecord = bookDAO.findTotalRecordByKeyWord(keyword);
+                //tim ve list dua tren keyword va page
+                listBook = bookDAO.findByKeyWordAndPage(keyword, page);
+                pageControl.setUrlPattern("home?action=search&keyword="+keyword);
+                break;
+            case "category":
+                //phan trang dua tren categoryId
+                //get ve categoryId
+                String categoryId = request.getParameter("categoryId");
+                //tinh totalRecord
+                totalRecord = bookDAO.findTotalRecordByCategory(categoryId);
+                //tim ve list dua tren category va page
+                listBook = bookDAO.findByCategoryAndPage(categoryId, page);
+                pageControl.setUrlPattern("home?action=category&categoryId="+categoryId);
+                break;
+            default:
+                //phan trang o trang home
+                //tim ve totalRecord
+                totalRecord = bookDAO.findTotalRecord();
+                //tim ve danh sach cac quyen sach o trang chi dinh
+                listBook = bookDAO.findListByPage(page);
+                pageControl.setUrlPattern("home?");
+        }
+
+        //tim kiem xem tong co bao nhieu page
+        int totalPage = (totalRecord % Constant.RECORD_PER_PAGE == 0
+                ? (totalRecord / Constant.RECORD_PER_PAGE)
+                : (totalRecord / Constant.RECORD_PER_PAGE) + 1);
+        //set gia tri vao pageControl
         pageControl.setPage(page);
         pageControl.setTotalPage(totalPage);
         pageControl.setTotalRecord(totalRecord);
-        return bookDAO.findListByPage(page);
+
+        return listBook;
     }
 
 }

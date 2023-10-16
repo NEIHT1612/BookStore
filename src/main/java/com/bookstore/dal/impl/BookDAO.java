@@ -28,9 +28,11 @@ public class BookDAO extends GenericDAO<Book> {
     }
 
     public static void main(String[] args) {
-        for (Book book : new BookDAO().findListByPage(2)) {
+        for (Book book : new BookDAO().findAll()) {
             System.out.println(book);
         }
+        System.out.println(new BookDAO().findTotalRecordByCategory("1"));
+        System.out.println(new BookDAO().findTotalRecordByKeyWord("m"));
     }
 
     public List<Book> getContainsByProperty(String property, String keyword) {
@@ -60,6 +62,50 @@ public class BookDAO extends GenericDAO<Book> {
 
     public int findTotalRecord() {
         return findTotalRecordGenericDAO(Book.class);
+    }
+
+    public int findTotalRecordByCategory(String categoryId) {
+        String sql = "select count(*) \n"
+                + "from Book\n"
+                + "where category_id = ?";
+        parameterMap = new LinkedHashMap<>();
+        parameterMap.put("category_id", categoryId);
+        return findTotalRecordGenericDAO(Book.class, sql, parameterMap);
+    }
+
+    public List<Book> findByCategoryAndPage(String categoryId, int page) {
+        String sql = "select * from Book\n"
+                + "where category_id = ?\n"
+                + "order by id\n"
+                + "offset ? rows\n"
+                + "fetch next ? rows only";
+        parameterMap = new LinkedHashMap<>();
+        parameterMap.put("category_id", categoryId);
+        parameterMap.put("offset", (page - 1) * Constant.RECORD_PER_PAGE);
+        parameterMap.put("fetch next", Constant.RECORD_PER_PAGE);
+        return queryGenericDAO(Book.class, sql, parameterMap);
+    }
+
+    public int findTotalRecordByKeyWord(String keyword) {
+        String sql = "select count(*)\n"
+                + "from Book\n"
+                + "where name like ?";
+        parameterMap = new LinkedHashMap<>();
+        parameterMap.put("name", "%" + keyword + "%");
+        return findTotalRecordGenericDAO(Book.class, sql, parameterMap);
+    }
+
+    public List<Book> findByKeyWordAndPage(String keyword, int page) {
+        String sql = "select * from Book\n"
+                + "where name like ?\n"
+                + "order by id\n"
+                + "offset ? rows\n"
+                + "fetch next ? rows only";
+        parameterMap = new LinkedHashMap<>();
+        parameterMap.put("name", "%" + keyword + "%");
+        parameterMap.put("offset", (page - 1) * Constant.RECORD_PER_PAGE);
+        parameterMap.put("fetch next", Constant.RECORD_PER_PAGE);
+        return queryGenericDAO(Book.class, sql, parameterMap);
     }
 
 }

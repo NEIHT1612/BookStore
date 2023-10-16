@@ -9,11 +9,8 @@
     <div class="row">
         <div class="col-md-2 mb-sm-5">
             <c:forEach var="category" items="${listCategory}"> 
-                <li class="list-group-item" onclick="submitForm(this)">
-                    ${category.name}
-                    <form action="home?action=category" method="POST">
-                        <input type="hidden" name="id" value="${category.id}">
-                    </form>
+                <li class="list-group-item" >
+                        <a href="home?action=category&categoryId=${category.id}" >${category.name}</a>
                 </li>
             </c:forEach>
         </div>
@@ -49,14 +46,3 @@
             </div>
         </div>
 </section>
-
-<script>
-    function submitForm(clickedLi) {
-        // Tìm form cha của thẻ li được nhấp
-        var form = clickedLi.querySelector('form');
-        if (form) {
-            // Submit form
-            form.submit();
-        }
-    }
-</script>

@@ -30,7 +30,8 @@
                     </ul>
 
                     <nav class="navbar navbar-light bg-light pl-sm-0">
-                        <form class="form-inline" action="home?action=search" method="post">
+                        <form class="form-inline" action="home" method="get">
+                            <input type="text" style="visibility: hidden" name="action" value="search"/>
                             <input class="form-control mr-sm-2" 
                                    type="search" 
                                    placeholder="Search" 
