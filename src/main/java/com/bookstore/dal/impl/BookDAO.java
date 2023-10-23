@@ -108,4 +108,39 @@ public class BookDAO extends GenericDAO<Book> {
         return queryGenericDAO(Book.class, sql, parameterMap);
     }
 
+    @Override
+    public int insert(Book book) {
+        return insertGenericDAO(book);
+    }
+
+    public void deleteById(int id) {
+        String sql = "DELETE FROM [dbo].[Book]\n"
+                + "      WHERE id = ?";
+        parameterMap = new LinkedHashMap<>();
+        parameterMap.put("id", id);
+        deleteGenericDAO(sql, parameterMap);
+    }
+
+    public void updateBook(Book book) {
+        String sql = "UPDATE [dbo].[Book]\n"
+                + "   SET [name] = ?\n"
+                + "      ,[image] = ?\n"
+                + "      ,[quantity] = ?\n"
+                + "      ,[author] = ?\n"
+                + "      ,[price] = ?\n"
+                + "      ,[description] = ?\n"
+                + "      ,[category_id] = ?\n"
+                + " WHERE id = ?";
+        parameterMap = new LinkedHashMap<>();
+        parameterMap.put("name", book.getName());
+        parameterMap.put("image", book.getImage());
+        parameterMap.put("quantity", book.getQuantity());
+        parameterMap.put("author", book.getAuthor());
+        parameterMap.put("price", book.getPrice());
+        parameterMap.put("description", book.getDescription());
+        parameterMap.put("category_id", book.getCategory_id());
+        parameterMap.put("id", book.getId());
+        updateGenericDAO(sql, parameterMap);
+    }
+
 }

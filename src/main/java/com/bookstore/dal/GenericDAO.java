@@ -229,6 +229,7 @@ public abstract class GenericDAO<T> extends DBContext {
      * nhớ rằng hàm này không update ID vì mặc định các bảng sẽ để ID tự động
      * tăng
      *
+     * @param sql
      * @param object: giá trị của đối tượng muốn update
      * @param parameterMap: hashmap chứa các parameter
      * @param condition: điều kiện AND hoặc OR
@@ -259,6 +260,7 @@ public abstract class GenericDAO<T> extends DBContext {
             return true;
         } catch (SQLException e) {
             try {
+                System.err.println("Loi o ham update: " + e.getMessage());
                 connection.rollback();
             } catch (SQLException ex) {
                 System.err.println("4USER: Bắn Exception ở hàm update: " + ex.getMessage());
@@ -561,4 +563,6 @@ public abstract class GenericDAO<T> extends DBContext {
     }
 
     public abstract List<T> findAll();
+    
+    public abstract int insert(T t);
 }
