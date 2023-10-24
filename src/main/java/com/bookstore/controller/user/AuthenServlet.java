@@ -83,11 +83,15 @@ public class AuthenServlet extends HttpServlet {
             request.setAttribute("error", "Username or password incorrect !");
             request.getRequestDispatcher("views/user/home-page/login.jsp").forward(request, response);
         }else{
+            if(account.getRoleId()==1){
+                response.sendRedirect("admin/dashboard");
+            }else{
             //set vao session account
             HttpSession session = request.getSession();
             session.setAttribute(Constant.SESSION_ACCOUNT, account);
             
             response.sendRedirect("home");
+            }
         }
     }
 
