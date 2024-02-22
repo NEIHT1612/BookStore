@@ -48,7 +48,7 @@ public class DashboardServlet extends HttpServlet {
             request.getRequestDispatcher("../views/admin/dashboard/dashboard.jsp").forward(request, response);
         } catch (ServletException | IOException e) {
             // Handle ServletException or IOException
-            e.printStackTrace(); // or log the exception, or perform appropriate error handling
+            //e.printStackTrace(); // or log the exception, or perform appropriate error handling
         }
     }
 
