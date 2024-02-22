@@ -13,27 +13,27 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <table class="table table-bordered" id="dataTable" cellspacing="0">
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Image</th>
-                        <th>Author</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                        <th>Description</th>
-                        <th>Action</th>
+                        <th id="nameHeader">Name</th>
+                        <th id="imageHeader">Image</th>
+                        <th id="authorHeader">Author</th>
+                        <th id="priceHeader">Price</th>
+                        <th id="quantityHeader">Quantity</th>
+                        <th id="descriptionHeader">Description</th>
+                        <th id="actionHeader">Action</th>
                     </tr>
                 </thead>
                 <tfoot>
                     <tr>
-                        <th>Name</th>
-                        <th>Image</th>
-                        <th>Author</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                        <th>Description</th>
-                        <th>Action</th>
+                        <th id="nameFooter">Name</th>
+                        <th id="imageFooter">Image</th>
+                        <th id="authorFooter">Author</th>
+                        <th id="priceFooter">Price</th>
+                        <th id="quantityFooter">Quantity</th>
+                        <th id="descriptionFooter">Description</th>
+                        <th id="actionFooter">Action</th>
                     </tr>
                 </tfoot>
                 <tbody>
@@ -60,15 +60,15 @@
                                    data-toggle="modal" 
                                    data-target="#editBookModal"
                                    onclick="editBookModal(
-                                           ${book.id},
-                                           `${book.name}`,
-                                           `${book.description}`,
-                                           `${book.author}`,
-                                           ${book.price},
-                                           ${book.quantity},
-                                           `${book.image}`,
-                                           ${book.category_id})">
-                                       
+                                   ${book.id},
+                                                   `${book.name}`,
+                                                   `${book.description}`,
+                                                   `${book.author}`,
+                                   ${book.price},
+                                   ${book.quantity},
+                                                   `${book.image}`,
+                                   ${book.category_id})">
+
                                 </i>
                                 &nbsp;&nbsp;&nbsp;
                                 <!--Delete-->

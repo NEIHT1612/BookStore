@@ -21,9 +21,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 public class HomeServlet extends HttpServlet {
-
-    BookDAO bookDAO;
-    CategoryDAO categoryDAO;
+    private static final String LIST_BOOK_ATTRIBUTE = "listBook";
+    private static final BookDAO bookDAO = new BookDAO();
+    private static final CategoryDAO categoryDAO = new CategoryDAO();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -31,8 +31,7 @@ public class HomeServlet extends HttpServlet {
         //tao SESSION
         HttpSession session = request.getSession();
         //tao DAO
-        bookDAO = new BookDAO();
-        categoryDAO = new CategoryDAO();
+        
         //tao doi tuong pageControl
         PageControl pageControl = new PageControl();
         List<Category> listCategory = categoryDAO.findAll();
@@ -41,7 +40,7 @@ public class HomeServlet extends HttpServlet {
         List<Book> listBook = pagination(request, pageControl);
 
         //set listBook vao session
-        session.setAttribute("listBook", listBook);
+        session.setAttribute(LIST_BOOK_ATTRIBUTE, listBook);
         session.setAttribute("listCategory", listCategory);
         request.setAttribute("pageControl", pageControl);
 
@@ -67,28 +66,28 @@ public class HomeServlet extends HttpServlet {
     private void searchByName(HttpServletRequest request, HttpServletResponse response) {
         String keyword = request.getParameter("keyword");
 
-        bookDAO = new BookDAO();
+        
         List<Book> list = bookDAO.getContainsByProperty("name", keyword);
 
         HttpSession session = request.getSession();
-        session.setAttribute("listBook", list);
+        session.setAttribute(LIST_BOOK_ATTRIBUTE, list);
     }
 
-    private void searchByCategory(HttpServletRequest request, HttpServletResponse response) {
-        String id = request.getParameter("id");
-
-        bookDAO = new BookDAO();
-
-        List<Book> list = bookDAO.findByProperty("category_id", id);
-
-        HttpSession session = request.getSession();
-        session.setAttribute("listBook", list);
-    }
+//    private void searchByCategory(HttpServletRequest request, HttpServletResponse response) {
+//        String id = request.getParameter("id");
+//
+//        bookDAO = new BookDAO();
+//
+//        List<Book> list = bookDAO.findByProperty("category_id", id);
+//
+//        HttpSession session = request.getSession();
+//        session.setAttribute(LIST_BOOK_ATTRIBUTE, list);
+//    }
 
     private List<Book> pagination(HttpServletRequest request, PageControl pageControl) {
         //get page
         String pageRaw = request.getParameter("page");
-        bookDAO = new BookDAO();
+        
         //valid page
         int page;
         try {

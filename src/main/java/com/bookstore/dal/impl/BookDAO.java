@@ -138,7 +138,7 @@ public class BookDAO extends GenericDAO<Book> {
         parameterMap.put("author", book.getAuthor());
         parameterMap.put("price", book.getPrice());
         parameterMap.put("description", book.getDescription());
-        parameterMap.put("category_id", book.getCategory_id());
+        parameterMap.put("category_id", book.getCategoryid());
         parameterMap.put("id", book.getId());
         updateGenericDAO(sql, parameterMap);
     }

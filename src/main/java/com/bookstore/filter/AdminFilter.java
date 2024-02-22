@@ -37,7 +37,7 @@ public class AdminFilter implements Filter {
     public AdminFilter() {
     }    
     
-    private void doBeforeProcessing(ServletRequest request, ServletResponse response)
+    private void doBeforeProcessing()
             throws IOException, ServletException {
         if (debug) {
             log("AdminFilter:DoBeforeProcessing");
@@ -107,7 +107,7 @@ public class AdminFilter implements Filter {
             log("AdminFilter:doFilter()");
         }
         
-        doBeforeProcessing(request, response);
+        doBeforeProcessing();
         
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;

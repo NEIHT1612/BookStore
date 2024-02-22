@@ -44,7 +44,12 @@ public class DashboardServlet extends HttpServlet {
         session.setAttribute("listCategories", listCategory);
         
         //chuyen qua dashboard.jsp
-        request.getRequestDispatcher("../views/admin/dashboard/dashboard.jsp").forward(request, response);
+        try {
+            request.getRequestDispatcher("../views/admin/dashboard/dashboard.jsp").forward(request, response);
+        } catch (ServletException | IOException e) {
+            // Handle ServletException or IOException
+            e.printStackTrace(); // or log the exception, or perform appropriate error handling
+        }
     }
 
     @Override
@@ -117,7 +122,7 @@ public class DashboardServlet extends HttpServlet {
                     .price(price)
                     .quantity(quantity)
                     .description(description)
-                    .category_id(categoryId)
+                    .categoryid(categoryId)
                     .image(imagePath)
                     .build();
 
@@ -186,7 +191,7 @@ public class DashboardServlet extends HttpServlet {
         book.setPrice(price);
         book.setQuantity(quantity);
         book.setDescription(description);
-        book.setCategory_id(categoryId);
+        book.setCategoryid(categoryId);
         book.setImage(imagePath);
 
         //tao doi tuong
