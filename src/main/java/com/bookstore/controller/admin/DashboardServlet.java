@@ -122,7 +122,7 @@ public class DashboardServlet extends HttpServlet {
                     .price(price)
                     .quantity(quantity)
                     .description(description)
-                    .categoryid(categoryId)
+                    .category_id(categoryId)
                     .image(imagePath)
                     .build();
 
@@ -191,7 +191,7 @@ public class DashboardServlet extends HttpServlet {
         book.setPrice(price);
         book.setQuantity(quantity);
         book.setDescription(description);
-        book.setCategoryid(categoryId);
+        book.setCategory_id(categoryId);
         book.setImage(imagePath);
 
         //tao doi tuong

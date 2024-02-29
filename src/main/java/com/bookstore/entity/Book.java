@@ -30,10 +30,10 @@ public class Book {
     private String image;
     private int quantity;
     private String author;
-    private Timestamp dateOfPublic;
+    private Timestamp date_Of_Public;
     private int price;
     private String publisher;
     private String description;
-    private int categoryid;
+    private int category_id;
 
 }

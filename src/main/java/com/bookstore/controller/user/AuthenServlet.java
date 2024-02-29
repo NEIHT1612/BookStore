@@ -48,7 +48,6 @@ public class AuthenServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Account account = new Account();
         String action = request.getParameter("action") == null ? "login" : request.getParameter("action");
         switch (action) {
             case "login":
